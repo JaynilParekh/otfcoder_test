@@ -21,9 +21,10 @@ class CreateUsersTable extends Migration
             $table->string('phone_number');
             $table->string('profile_picture');
             $table->string('activation_code');
-            $table->integer('is_active');
+            $table->integer('is_activated');
             $table->rememberToken();
             $table->timestamps();
+            $table->unique([DB::raw('email(191)')]);
         });
     }
 

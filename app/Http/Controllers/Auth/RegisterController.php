@@ -81,9 +81,11 @@ class RegisterController extends Controller
 
     public function register(Request $request){
 
-        // $this->validator($request->all())->validate();
+         // $this->validator($request->all())->validate();
 
-         if($request->hasFile('profile_image'))
+    
+
+    if($request->hasFile('profile_image'))
         {
 
             $photoId = str_random(50).'.'.$request->file('profile_image')->getClientOriginalExtension();
@@ -104,11 +106,11 @@ class RegisterController extends Controller
                 ]);
 
         $user->notify(new UserRegistrationConfirmationMail($user));
-        $data = array();
-        $data['status'] = 'success';
-        $data['message'] = 'Registration success';
-        return response()->json($data);
-        return redirect('/login');
+            return response()->json(['success'=>'Added new records.']);
+    
+       
+        // return response()->json($data);
+        // return redirect('/login');
 
     }
 }

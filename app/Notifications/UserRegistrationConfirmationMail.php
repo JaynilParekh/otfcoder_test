@@ -47,7 +47,7 @@ class UserRegistrationConfirmationMail extends Notification
                     ->line('Dear '.$this->user->name.',')
                     ->line($this->user->name. ', Congrats! Your account is successfully created. Please click below link to activate your account.')
                     ->action('Activate Email Account',route('registration_conformation.index',$this->user->activation_code))
-                    ->line('Without activating your account you cannot login and use your membership.')
+                    ->line('Without activating your account you cannot login.')
                     ->line('Thank you for using our application!');
     }
 

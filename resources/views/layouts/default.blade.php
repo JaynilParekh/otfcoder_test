@@ -16,13 +16,13 @@
 @yield('content')
 <script src="{{ url('jQuery/jQuery-2.1.4.min.js')}}"></script>  
 <script src="{{ asset('js/app.js') }}"></script>
-<!-- <script>
+<script>
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-</script> -->
+</script>
 @yield('footer_assets')
 </body>
   </html>

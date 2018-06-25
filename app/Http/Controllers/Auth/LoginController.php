@@ -59,7 +59,7 @@ class LoginController extends Controller
             $user = User::where('email',$request->email)->first();
 
             if($user->is_activated == 1){
-              return redirect()->route('user.index');  
+              return redirect()->route('users.index');  
             }
             else{
                 return redirect()->back()->withInput()->withErrors(['Your account is under process']);

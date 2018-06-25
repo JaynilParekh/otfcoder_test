@@ -7,6 +7,7 @@ use App\User;
 use Auth;
 use Image;
 Use File;
+use App\Notifications\UserRegistrationConfirmationMail;
 
 class UserController extends Controller
 {
@@ -16,57 +17,111 @@ class UserController extends Controller
 
 		$users = User::all();
 
-		return view('user_table',compact('users'));
+		return view('users.index',compact('users'));
 	}
 
-    public function profile(){
-
-    	$user = Auth::user();
-
-    	return view('profile',compact('user'));
-
+    public function create(){
+        return view('users.create');
     }
 
-    public function edit(){
+    public function store(Request $request){
 
-    	$user = Auth::user();
+        $this->validate($request, [
+            'name'           => 'required|max:500',
+            'email'          => 'required|max:500|unique:users',
+            'phone_number'   => 'required',
+            'password'       => 'required|string|min:6|confirmed',
+            'profile_image'  => 'mimes:jpg,jpeg,png,gif',       
+            ]);
 
-    	return view('edit_profile',compact('user'));
-    
-    }
-
-    public function update(Request $request){
-
-    	$this->validate($request, [
-            'name'                     => 'required|max:500',
-            'email'              		=> 'required|max:500',
-            'phone_number'               => 'required',
-            
-        ]);
-
-    	 if($request->hasFile('profile_image'))
+        if($request->hasFile('profile_image'))
         {
 
             $photoId = str_random(50).'.'.$request->file('profile_image')->getClientOriginalExtension();
             Image::make($request->file('profile_image'))->save(public_path('uploads/'.$photoId));
-            
+
             $photo_id = $photoId;
-            
-        }
-        else{
-        	$photo_id = Auth::user()->profile_picture;
+
         }
 
-    	$user = Auth::user();
+        $user = User::create([
+            'name'                  => $request->name,
+            'email'                 => $request->email,
+            'password'              => bcrypt($request->password),
+            'phone_number'          => $request->phone_number,
+            'profile_picture'       => $photo_id,
+            'is_activated'          => 0,
+            'activation_code'     => str_random(20),
+            ]);
 
-    	$user->name = $request->name;
-    	$user->email = $request->email;
-    	$user->phone_number = $request->phone_number;
-    	$user->profile_picture = $photo_id;
+        $user->notify(new UserRegistrationConfirmationMail($user));
 
-    	$user->save();
-
-    	return redirect()->route('user.profile');
+        return redirect()->route('users.index');
 
     }
+
+    public function show($userId){
+
+        $user = User::findOrFail($userId);
+
+        return view('users.show',compact('user'));
+
+    }
+
+    public function edit($userId){
+
+       $user = User::findOrFail($userId);
+
+       return view('users.edit',compact('user'));
+
+   }
+
+   public function update($userId,Request $request){
+
+       $this->validate($request, [
+        'name'           => 'required|max:500',
+        'email'          => 'required|max:500',
+        'phone_number'   => 'required',
+        'profile_image'  => 'mimes:jpg,jpeg,png,gif',       
+        ]);
+
+       $user = User::findOrFail($userId);
+
+       $user->name = $request->name;
+
+       $user->email = $request->email;
+
+       $user->phone_number = $request->phone_number;
+
+       if($request->hasFile('profile_image'))
+       {
+
+        if($user->profile_picture != NULL)
+            File::delete(public_path('uploads/'.$user->avatar_url));
+
+        $photoId = str_random(50).'.'.$request->file('profile_image')->getClientOriginalExtension();
+        Image::make($request->file('profile_image'))->save(public_path('uploads/'.$photoId));
+
+        $user->profile_picture = $photo_id;
+    }
+
+    $user->save();
+
+    return redirect()->route('users.index');
+
+}
+
+public function destroy($userId){
+
+    $user = User::findOrFail($userId);
+    
+    if($user->profile_picture != NULL)
+        File::delete(public_path('uploads/'.$user->avatar_url));
+
+    $user->delete();
+
+    return redirect()->back();
+    
+}
+
 }

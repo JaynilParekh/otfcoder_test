@@ -6,60 +6,79 @@
 
 <section class="agile-volt">
   <div class="agile-voltheader"> 
-     <a href="index.html"><img src="{{url('assets/frontend/images/logo1.png')}}"></a></div>
-     <div class="agile-voltsub"><br>
+   <a href="index.html"><img src="{{url('assets/frontend/images/logo1.png')}}"></a></div>
+   <div class="agile-voltsub"><br>
 
-         <div class="top-registerbbar-main">
+       <div class="top-registerbbar-main">
 
-            <div class="alert alert-danger print-error-msg" style="display:none">
-            </div>
-       
+        <div class="member-registerbbar">
 
-    <div class="club-registerbbar">
-      <a href="{{ route('login') }}">
-          <button> Login </button>
+        <a href="{{route('users.index')}}"><button>User List</button></a>
+
+        </div>
+
+        <div class="club-registerbbar">
+          <a href="{{ route('logout') }}" onclick="event.preventDefault();
+          document.getElementById('logout-form').submit();">
+          <button> Logout </button>
       </a>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        {{ csrf_field() }}
+    </form>
 
-
-  </div>
-
-  
-  <div class="clear"></div>
+</div>
+<div class="clear"></div>
 </div>
 
 <div>
-    <h2>Registeration</h2>
+    <h2>User Insert For</h2>
 
-    <form id="register_form" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+    <form id="register_form" method="POST" action="{{ route('users.index') }}" enctype="multipart/form-data">
         {{ csrf_field() }}
 
 
         <div class="agile-name">
             <p>Name </p>
             <input type="text" id="name" name="name" value="{{ old('name') }}">
+            @if($errors->has('name'))
+            <span style="color:red">{{ $errors->first('name') }}</span>
+            @endif
         </div>
         <div class="clear"></div>
         <div class="agile-name">
             <p>Email </p>
             <input type="text" id="email" name="email" value="{{ old('email') }}">
+            @if($errors->has('email'))
+            <span style="color:red">{{ $errors->first('email') }}</span>
+            @endif
         </div>
         <div class="clear"></div>
 
         <div class="agile-name">
             <p>Password </p>
             <input type="password" id="password" name="password" value="{{ old('password') }}">
+             @if($errors->has('password'))
+            <span style="color:red">{{ $errors->first('password') }}</span>
+            @endif
         </div>
         <div class="clear"></div>
 
         <div class="agile-name">
             <p>Confirm Password </p>
             <input type="password"  id="password-confirm" name="password_confirmation" value="{{ old('password') }}">
+            @if($errors->has('password_confirmation'))
+            <span style="color:red">{{ $errors->has('password_confirmation') }}</span>
+            @endif
+            
         </div>
         <div class="clear"></div>
 
         <div class="agile-name">
             <p>Phone number </p>
             <input type="text" name="phone_number" value="{{ old('phone_number') }}">
+            @if($errors->has('phone_number'))
+            <span style="color:red">{{ $errors->has('phone_number') }}</span>
+            @endif
         </div>
         <div class="agile-name">
             <p>Profile Image </p>
@@ -80,7 +99,7 @@
 
 <script src="{{ url('jQuery/jQuery-2.1.4.min.js')}}"></script>  
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     $(document).ready(function(){
 
 
@@ -129,7 +148,7 @@
 
 
 
-  if (name == "") {
+if (name == "") {
     alert("Please enter the Name.");
     $('#name').focus();
     return false;
@@ -173,7 +192,7 @@ $.ajax({
     processData: false,
     contentType: false,
     success: function(data){
-        
+
         // var json_data = JSON.parse(data.error);
         // // alert(json_data.error);
         //         if($.isEmptyObject(json_data.error)){
@@ -190,6 +209,7 @@ $.ajax({
         $('#password-confirm').val('');
         $('#password').val('');
         $('#phone_number').val('');
+        window.location('/users');
 
     },
     error: function(data){
@@ -207,7 +227,7 @@ $.ajax({
         // }
 
     });
-</script>
+</script> -->
 
 @endsection
 x
