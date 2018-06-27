@@ -6,79 +6,90 @@
 
 <section class="agile-volt">
   <div class="agile-voltheader"> 
-   <a href="index.html"><img src="{{url('assets/frontend/images/logo1.png')}}"></a></div>
-   <div class="agile-voltsub"><br>
+     <a href="index.html"><img src="{{url('assets/frontend/images/logo1.png')}}"></a></div>
+     <div class="agile-voltsub"><br>
 
-       <div class="top-registerbbar-main">
+         <div class="top-registerbbar-main">
 
-        <div class="alert alert-danger print-error-msg" style="display:none">
-        </div>
-
-
-        <div class="club-registerbbar">
-          <a href="{{ route('login') }}">
-              <button> Login </button>
-          </a>
+            <div class="alert alert-danger print-error-msg" style="display:none">
+            </div>
 
 
+            <div class="club-registerbbar">
+              <a href="{{ route('login') }}">
+                  <button> Login </button>
+              </a>
+
+
+          </div>
+
+
+          <div class="clear"></div>
       </div>
 
+      <div>
+        <h2>Registeration</h2>
 
-      <div class="clear"></div>
-  </div>
-
-  <div>
-    <h2>Registeration</h2>
-
-    <form id="register_form" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
-        {{ csrf_field() }}
+        <form id="register_form" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+            {{ csrf_field() }}
 
 
-        <div class="agile-name">
-            <p>Name </p>
-            <input type="text" id="name" name="name" value="{{ old('name') }}">
-            <span class="error_name" style="color:red;display:none"></span>
-        </div>
-        <div class="clear"></div>
-        <div class="agile-name">
-            <p>Email </p>
-            <input type="text" id="email" name="email" value="{{ old('email') }}">
-            <span class="error_email" style="color:red;display:none"></span>
-        </div>
-        <div class="clear"></div>
+            <div class="agile-name">
+                <p>Name </p>
+                <input type="text" id="name" name="name" value="{{ old('name') }}">
+                <span class="error_name" style="color:red;display:none"></span>
+            </div>
+            <div class="clear"></div>
+            <div class="agile-name">
+                <p>Email </p>
+                <input type="text" id="email" name="email" value="{{ old('email') }}">
+                <span class="error_email" style="color:red;display:none"></span>
+            </div>
+            <div class="clear"></div>
 
-        <div class="agile-name">
-            <p>Password </p>
-            <input type="password" id="password" name="password" value="{{ old('password') }}">
-            <span class="error_password" style="color:red;display:none"></span>
-        </div>
-        <div class="clear"></div>
+            <div class="agile-name">
+                <p>Password </p>
+                <input type="password" id="password" name="password" value="{{ old('password') }}">
+                <span class="error_password" style="color:red;display:none"></span>
+            </div>
+            <div class="clear"></div>
 
-        <div class="agile-name">
-            <p>Confirm Password </p>
-            <input type="password"  id="password-confirm" name="password_confirmation" value="{{ old('password') }}">
-        </div>
-        <div class="clear"></div>
+            <div class="agile-name">
+                <p>Confirm Password </p>
+                <input type="password"  id="password-confirm" name="password_confirmation" value="{{ old('password') }}">
+            </div>
+            <div class="clear"></div>
 
-        <div class="agile-name">
-            <p>Phone number </p>
-            <input type="text" id="phone_number" name="phone_number" value="{{ old('phone_number') }}">
-            <span class="error_phone_number" style="color:red;display:none"></span>
+            <div class="agile-name">
+                <p>Phone number </p>
+                <input type="text" id="phone_number" name="phone_number" value="{{ old('phone_number') }}">
+                <span class="error_phone_number" style="color:red;display:none"></span>
 
-        </div>
-        <div class="agile-name">
-            <p>Profile Image </p>
-            <input type="file" id="profile_image" name="profile_image" ">
-            <span class="error_profile_image" style="color:red;display:none"></span>
-        </div>
-        <div class="clear"></div>
+            </div>
+            <div class="agile-name">
+                <p>Profile Image </p>
+                <input type="file" id="profile_image" name="profile_image" ">
+                <span class="error_profile_image" style="color:red;display:none"></span>
+            </div>
+            <div class="clear"></div>
 
 
 
-        <input type="button" value="submit" id="submit_btn" class="btn btn-primary">
+            <input type="button" style="font-size: 20px;font-weight: 500;text-align: center;
+            text-transform: capitalize;
+            letter-spacing: 2px;
+            background: rgba(3, 157, 66, 0.93);
+            color: #fff;
+            border: none;
+            outline: none;
+            width: 45%;
+            margin: 2em auto 0;
+            display: block;
+            padding: 0.5em 0.5em;
+            cursor: pointer;"  value="submit" id="submit_btn" class="btn btn-primary">
 
-    </button>
-</form>
+        </button>
+    </form>
 </div>
 </div>
 </section>
@@ -111,95 +122,32 @@
             var request_method = 'POST';
             var Url = '{{ route('register') }}';
 
-        // alert(email);
-
-//         if (name == "") {
-//           $('#name').after('<span class="error" style = "color:red">This field is required</span>');
-//           return false;
-//       }
-//       if (phone_number == "") {
-//           $('#phone_number').after('<span class="error" style = "color:red">This field is required</span>');
-//           return false;
-//       }
-//       if (email == "") {
-//           $('#email').after('<span class="error" style = "color:red">This field is required</span>');
-//           return false;
-//       } else {
-//           var regEx = /^[A-Z0-9][A-Z0-9._%+-]{0,63}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/;
-//           var validEmail = regEx.test(email);
-//           if (!validEmail) {
-//             $('#email').after('<span class="error" style = "color:red">Enter a valid email</span>');
-//             return false;
-//         }
-//     }
-//     if (password.length == "") {
-//       $('#password').after('<span class="error" style = "color:red">Password must be at least 5 characters long</span>');
-//       return false;
-//   }
-
-//   if (confirm_password != password) {
-//     $('#password').after('<span class="error" style = "color:red">Confirm Password must be same</span>');
-
-//     return false;
-// }
+            
 
 
 
-// if (name == "") {
-//     alert("Please enter the Name.");
-//     $('#name').focus();
-//     return false;
-// } else if (email == "") {
-//     alert("Please enter the Email.");
-//     $('#email').focus();
-//     return false;
-// } else if (password == "") {
-//     alert("Please enter the Password.");
-//     $('#password').focus();
-//     return false;
-// }
-// else if (phone_number == "") {
-//     alert("Please enter the phone number.");
-//     $('#phone_number').focus();
-//     return false;
-// }
+            $.ajax({
 
-// else if (confirm_password != password) {
-//     alert("Confirm password is not matched.");
-//     $('#password-confirm').focus();
-//     return false;
-// }
-
-// else {
-
-// }
-
-// e.preventDefault(e);
-
-
-
-$.ajax({
-
-    type:request_method,
-    url:Url,
-    data:form_data,
-    dataType: 'json',
-    processData: false,
-    contentType: false,
-    success: function(data){
+                type:request_method,
+                url:Url,
+                data:form_data,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: function(data){
         //alert(data);
         if(data.success == 'true'){
-        
+            
 
-        alert("Congrats! Your account is successfully created. Please check your email for activate your account.");
-        $('#name').val('');
-        $('#email').val('');
-        $('#phone_number').val('');
-        $('#password-confirm').val('');
-        $('#password').val('');
-        $('#phone_number').val('');
-    }
-    else{
+            alert("Congrats! Your account is successfully created. Please check your email for activate your account.");
+            $('#name').val('');
+            $('#email').val('');
+            $('#phone_number').val('');
+            $('#password-confirm').val('');
+            $('#password').val('');
+            $('#phone_number').val('');
+        }
+        else{
         // alert(data);
         $('.error_name').hide();
         $('.error_email').hide();
@@ -208,17 +156,17 @@ $.ajax({
 
         $(data).each(function(i, val) {
 
-                $.each(val, function(key, v) {
-                    $('.error_' + key).text(v);
-                    $('.error_' + key).show();
-                });
-            });  
+            $.each(val, function(key, v) {
+                $('.error_' + key).text(v);
+                $('.error_' + key).show();
+            });
+        });  
         
     }
-    },
-    
+},
+
 })
-});
+        });
 
         // function printErrorMsg (msg) {
         //     $(".print-error-msg").find("ul").html('');
