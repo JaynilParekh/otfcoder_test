@@ -6,28 +6,28 @@
 
 <section class="agile-volt">
   <div class="agile-voltheader"> 
-     <a href="index.html"><img src="{{url('assets/frontend/images/logo1.png')}}"></a></div>
-     <div class="agile-voltsub"><br>
+   <a href="index.html"><img src="{{url('assets/frontend/images/logo1.png')}}"></a></div>
+   <div class="agile-voltsub"><br>
 
-         <div class="top-registerbbar-main">
+       <div class="top-registerbbar-main">
 
-            <div class="alert alert-danger print-error-msg" style="display:none">
-            </div>
-       
-
-    <div class="club-registerbbar">
-      <a href="{{ route('login') }}">
-          <button> Login </button>
-      </a>
+        <div class="alert alert-danger print-error-msg" style="display:none">
+        </div>
 
 
+        <div class="club-registerbbar">
+          <a href="{{ route('login') }}">
+              <button> Login </button>
+          </a>
+
+
+      </div>
+
+
+      <div class="clear"></div>
   </div>
 
-  
-  <div class="clear"></div>
-</div>
-
-<div>
+  <div>
     <h2>Registeration</h2>
 
     <form id="register_form" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
@@ -37,17 +37,20 @@
         <div class="agile-name">
             <p>Name </p>
             <input type="text" id="name" name="name" value="{{ old('name') }}">
+            <span class="error_name" style="color:red;display:none"></span>
         </div>
         <div class="clear"></div>
         <div class="agile-name">
             <p>Email </p>
             <input type="text" id="email" name="email" value="{{ old('email') }}">
+            <span class="error_email" style="color:red;display:none"></span>
         </div>
         <div class="clear"></div>
 
         <div class="agile-name">
             <p>Password </p>
             <input type="password" id="password" name="password" value="{{ old('password') }}">
+            <span class="error_password" style="color:red;display:none"></span>
         </div>
         <div class="clear"></div>
 
@@ -59,17 +62,20 @@
 
         <div class="agile-name">
             <p>Phone number </p>
-            <input type="text" name="phone_number" value="{{ old('phone_number') }}">
+            <input type="text" id="phone_number" name="phone_number" value="{{ old('phone_number') }}">
+            <span class="error_phone_number" style="color:red;display:none"></span>
+
         </div>
         <div class="agile-name">
             <p>Profile Image </p>
-            <input type="file" name="profile_image" ">
+            <input type="file" id="profile_image" name="profile_image" ">
+            <span class="error_profile_image" style="color:red;display:none"></span>
         </div>
         <div class="clear"></div>
 
 
 
-        <input type="submit" class="btn btn-primary">
+        <input type="button" value="submit" id="submit_btn" class="btn btn-primary">
 
     </button>
 </form>
@@ -86,14 +92,24 @@
 
 
 
-        $('#register_form').on('submit',function(e){
+        $('#submit_btn').on('click',function(){
 
             var name = $("#name").val();
             var email = $("#email").val();
             var password = $("#password").val();
             var phone_number = $("#phone_number").val();
             var confirm_password = $("#password-confirm").val();
-        // var profile_image = $("#profile_image").val();
+            var profile_image = $("#profile_image").prop("files")[0];
+
+            var form_data = new FormData();
+            form_data.append('name',name);
+            form_data.append('email',email);
+            form_data.append('password',password);
+            form_data.append('password_confirmation',confirm_password);
+            form_data.append('phone_number',phone_number);
+            form_data.append('profile_image',profile_image);
+            var request_method = 'POST';
+            var Url = '{{ route('register') }}';
 
         // alert(email);
 
@@ -129,39 +145,37 @@
 
 
 
-  if (name == "") {
-    alert("Please enter the Name.");
-    $('#name').focus();
-    return false;
-} else if (email == "") {
-    alert("Please enter the Email.");
-    $('#email').focus();
-    return false;
-} else if (password == "") {
-    alert("Please enter the Password.");
-    $('#password').focus();
-    return false;
-}
-else if (phone_number == "") {
-    alert("Please enter the phone number.");
-    $('#phone_number').focus();
-    return false;
-}
+// if (name == "") {
+//     alert("Please enter the Name.");
+//     $('#name').focus();
+//     return false;
+// } else if (email == "") {
+//     alert("Please enter the Email.");
+//     $('#email').focus();
+//     return false;
+// } else if (password == "") {
+//     alert("Please enter the Password.");
+//     $('#password').focus();
+//     return false;
+// }
+// else if (phone_number == "") {
+//     alert("Please enter the phone number.");
+//     $('#phone_number').focus();
+//     return false;
+// }
 
-else if (confirm_password != password) {
-    alert("Confirm password is not matched.");
-    $('#password-confirm').focus();
-    return false;
-}
+// else if (confirm_password != password) {
+//     alert("Confirm password is not matched.");
+//     $('#password-confirm').focus();
+//     return false;
+// }
 
-else {
+// else {
 
-}
+// }
 
-e.preventDefault(e);
-var form_data = new FormData(this);
-var request_method = $(this).attr("method");
-var Url = $(this).attr("action");
+// e.preventDefault(e);
+
 
 
 $.ajax({
@@ -169,20 +183,14 @@ $.ajax({
     type:request_method,
     url:Url,
     data:form_data,
-    dataType: 'text',
+    dataType: 'json',
     processData: false,
     contentType: false,
     success: function(data){
+        //alert(data);
+        if(data.success == 'true'){
         
-        // var json_data = JSON.parse(data.error);
-        // // alert(json_data.error);
-        //         if($.isEmptyObject(json_data.error)){
-        //                  alert(json_data.error);
-        //             }else{
-        //                 console.log(json_data);
-        //                 // alert(json_data)
-        //                 printErrorMsg(json_data.error);
-        //             }
+
         alert("Congrats! Your account is successfully created. Please check your email for activate your account.");
         $('#name').val('');
         $('#email').val('');
@@ -190,11 +198,25 @@ $.ajax({
         $('#password-confirm').val('');
         $('#password').val('');
         $('#phone_number').val('');
-
-    },
-    error: function(data){
-
     }
+    else{
+        // alert(data);
+        $('.error_name').hide();
+        $('.error_email').hide();
+        $('.error_password').hide();
+        $('.error_phone_number').hide();
+
+        $(data).each(function(i, val) {
+
+                $.each(val, function(key, v) {
+                    $('.error_' + key).text(v);
+                    $('.error_' + key).show();
+                });
+            });  
+        
+    }
+    },
+    
 })
 });
 

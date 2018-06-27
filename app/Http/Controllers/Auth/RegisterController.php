@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Notifications\UserRegistrationConfirmationMail;
 use Image;
 use File;
+use Illuminate\Support\Facades\Input;
 
 class RegisterController extends Controller
 {
@@ -82,8 +83,24 @@ class RegisterController extends Controller
     public function register(Request $request){
 
          // $this->validator($request->all())->validate();
+         // $data = Input::all();
+        $validator = Validator::make($request->all(), [
+            'name'           => 'required|max:500',
+            'email'          => 'required|max:500|unique:users',
+            'phone_number'   => 'required',
+            'password'       => 'required|string|min:6|confirmed',
+            // 'profile_image'  => 'mimes:jpg,jpeg,png,gif',       
+            ]);
+        // return response()->json(['success' => 'true'] );
+        if($validator->fails()){
+            return $validator->errors();
+            // $data = [];
+            // $data['error'] = $validator->getMessageBag()->toArray();
+            // $data['success'] = false;
+            // return response()->json($data); 
+        }
+        else{
 
-    
 
     if($request->hasFile('profile_image'))
         {
@@ -106,8 +123,9 @@ class RegisterController extends Controller
                 ]);
 
         $user->notify(new UserRegistrationConfirmationMail($user));
-            return response()->json(['success'=>'Added new records.']);
-    
+           
+            return response()->json(['success'=>'true']);
+    }
        
         // return response()->json($data);
         // return redirect('/login');
